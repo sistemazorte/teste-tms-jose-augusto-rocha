@@ -23,10 +23,10 @@ class StoreDriverRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:150',
-            'cpf' => 'required|string|size:14|unique:drivers,cpf',
-            'cnh_number' => 'required|string|max:20|unique:drivers,cnh_number',
+            'cpf' => 'required|string|regex:/^[0-9.\-]+$/|unique:drivers,cpf',
+            'cnh_number' => 'required|string|regex:/^[0-9.\-]+$/|max:20|unique:drivers,cnh_number',
             'cnh_category' => 'required|string|in:A,B,C,D,E',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|regex:/^[0-9\-\(\)\+\s]+$/|max:20',
             'is_active' => 'sometimes|boolean',
         ];
     }

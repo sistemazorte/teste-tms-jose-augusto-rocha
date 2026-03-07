@@ -22,12 +22,13 @@ class DatabaseSeeder extends Seeder
         DB::table('drivers')->truncate();
         DB::table('users')->truncate();
 
+        User::factory(4)->create();
         User::create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' =>bcrypt('admin'),
         ]);
-
+        
         $this->call([
         DriverSeeder::class,
          ]);

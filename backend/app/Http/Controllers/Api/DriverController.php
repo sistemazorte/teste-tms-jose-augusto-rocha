@@ -16,7 +16,7 @@ class DriverController extends Controller
     public function index()
     {
         return DriverResource::collection(
-            Driver::query()->orderBy('id', 'desc')->paginate(10)
+            Driver::query()->orderBy('id', 'desc')->get()
         );
     }
 

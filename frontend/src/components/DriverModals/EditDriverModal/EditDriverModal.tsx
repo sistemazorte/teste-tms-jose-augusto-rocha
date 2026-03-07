@@ -1,32 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../../Modal/Modal";
 import type { Driver } from "../../../types/Driver";
+import axiosClient from "@/api/axios-client";
 import { Button } from "@mui/material";
-import { createDriver } from "@/services/driverService";
-import type { ValidationErrors } from "@/types/ValidationErrors";
+import { updateDriver } from "@/services/driverService";
 
 interface NewDriverModalProps {
   open: boolean;
   onClose: () => void;
+  formData: Driver | null;
   onSaved: () => void;
 }
 
-export default function NewDriverModal({
+export default function EditDriverModal({
   open,
   onClose,
+  formData,
   onSaved,
 }: NewDriverModalProps) {
-  const [errors, setErrors] = useState<ValidationErrors | null>(null);
-
   const [driver, setDriver] = useState<Driver>({
     id: null,
     name: "",
     cpf: "",
     cnh_number: "",
-    cnh_category: "A",
+    cnh_category: "",
     phone: "",
     is_active: true,
   });
+
+  useEffect(() => {
+    if (formData) {
+      setDriver(formData);
+    }
+  }, [formData]);
+
+  const handleSubmit = () => {
+    if (!driver.id) return;
+    axiosClient;
+    updateDriver(driver)
+      .then(() => {
+        onSaved();
+        onClose();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -39,67 +58,24 @@ export default function NewDriverModal({
     }));
   };
 
-  const handleSubmit = () => {
-    if (
-      !driver.name.trim() ||
-      !driver.cpf.trim() ||
-      !driver.cnh_number.trim() ||
-      !driver.cnh_category.trim()
-    ) {
-      setErrors({
-        form: ["Preencha todos os dados corretamente para continuar"],
-      });
-      return;
-    }
-
-    createDriver(driver)
-      .then(() => {
-        setDriver({
-          id: null,
-          name: "",
-          cpf: "",
-          cnh_number: "",
-          cnh_category: "A",
-          phone: "",
-          is_active: true,
-        });
-        onSaved();
-        onClose();
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 422) {
-          if (err.response.data.errors) {
-            setErrors(err.response.data.errors);
-            return;
-          }
-        }
-      });
-  };
   return (
     <>
       <Modal open={open} onClose={onClose}>
-        <div className="min-w-l">
+        <div className="min-w-xl">
           <div>
             <h2 className="text-xl font-semibold mb-1">Novo Motorista</h2>
 
             <p className="text-sm text-gray-500 mb-3">
               Preencha os dados do motorista
             </p>
-            {errors && (
-              <div className="p-3 bg-red-500 text-white rounded mb-3">
-                {Object.keys(errors).map((key) => (
-                  <p key={key}>{errors[key][0]}</p>
-                ))}
-              </div>
-            )}
           </div>
-          <div className="flex flex-col gap-2 overflow-y-auto px-2">
+          <div className="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-200px)] px-2">
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Nome *</label>
               <input
-                name="name"
                 type="text"
                 placeholder="Nome Completo"
+                name="name"
                 value={driver.name}
                 onChange={handleChange}
                 className="border border-gray-500 rounded-lg p-2 text-sm"
@@ -110,12 +86,10 @@ export default function NewDriverModal({
               <div className="flex flex-col gap-1 flex-1">
                 <label className="text-sm font-medium">CPF *</label>
                 <input
-                  name="cpf"
-                  inputMode="numeric"
                   type="text"
                   placeholder="000.000.000-00"
+                  name="cpf"
                   value={driver.cpf}
-                  maxLength={14}
                   onChange={handleChange}
                   className="border border-gray-500 rounded-lg p-2 text-sm"
                 />
@@ -123,10 +97,9 @@ export default function NewDriverModal({
               <div className="flex flex-col gap-1 flex-1">
                 <label className="text-sm font-medium">Telefone</label>
                 <input
-                  name="phone"
                   type="text"
-                  maxLength={20}
                   placeholder="(00) 0000-0000"
+                  name="phone"
                   value={driver.phone}
                   onChange={handleChange}
                   className="border border-gray-500 rounded-lg p-2 text-sm"
@@ -138,10 +111,9 @@ export default function NewDriverModal({
               <div className="flex flex-col gap-1 flex-1 max-w-68">
                 <label className="text-sm font-medium">Número CNH *</label>
                 <input
-                  name="cnh_number"
-                  maxLength={20}
                   type="text"
                   placeholder="000.000.000-00"
+                  name="cnh_number"
                   value={driver.cnh_number}
                   onChange={handleChange}
                   className="border border-gray-500 rounded-lg p-2 text-sm"

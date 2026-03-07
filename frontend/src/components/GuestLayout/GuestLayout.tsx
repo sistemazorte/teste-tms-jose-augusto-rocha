@@ -11,11 +11,8 @@ export default function GuestLayout() {
 
   return (
     <>
-      <div
-        key={location.pathname} //força remount do container quando muda rota
-        className="login-signup-form animated fadeInDown"
-      >
-        <div className="form">
+      <div className="h-screen flex justify-center items-center">
+        <div className="w-full max-w-90 animate-fadeInDown">
           <Outlet />
         </div>
       </div>

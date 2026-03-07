@@ -37,25 +37,45 @@ export default function Signup() {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <h1 className="title">Criar uma conta</h1>
+    <form
+      onSubmit={onSubmit}
+      className="w-full max-w-90 bg-white p-8 rounded-lg shadow-sm flex flex-col gap-2"
+    >
+      <h1 className="text-xl font-semibold text-center">Criar uma conta</h1>
       {errors && (
-        <div className="alert">
+        <div className="p-3 bg-red-500 text-white rounded">
           {Object.keys(errors).map((key) => (
             <p key={key}>{errors[key][0]}</p>
           ))}
         </div>
       )}
-      <input ref={nameRef} type="text" placeholder="Nome completo" />
-      <input ref={emailRef} type="email" placeholder="Endereço de Email" />
-      <input ref={passwordRef} type="password" placeholder="Senha" />
+      <input
+        ref={nameRef}
+        type="text"
+        placeholder="Nome completo"
+        className="w-full px-4 py-3 border-2 border-gray-200 rounded focus:border-purple-700 outline-none transition"
+      />
+      <input
+        ref={emailRef}
+        type="email"
+        placeholder="Endereço de Email"
+        className="w-full px-4 py-3 border-2 border-gray-200 rounded focus:border-purple-700 outline-none transition"
+      />
+      <input
+        ref={passwordRef}
+        type="password"
+        placeholder="Senha"
+        className="w-full px-4 py-3 border-2 border-gray-200 rounded focus:border-purple-700 outline-none transition"
+      />
       <input
         ref={passwordConfirmationRef}
         type="password"
         placeholder="Confirme sua senha"
       />
-      <button className="btn btn-block">Criar Conta</button>
-      <p className="message">
+      <button className="w-full py-3 bg-purple-700 text-white font-medium rounded hover:bg-purple-800 transition">
+        Criar Conta
+      </button>
+      <p className="mt-4 text-center text-gray-500 text-sm">
         Já Registrado? <Link to="/login">Logar na sua conta</Link>
       </p>
     </form>

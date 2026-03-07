@@ -11,6 +11,7 @@ Route::middleware('auth:sanctum')->group(function() {
         return $request->user();
     });
     Route::apiResource('/drivers', DriverController::class);
+    Route::patch('/drivers/{driver}/toggle-active', [DriverController::class, 'toggleActive']);
 });
 
 

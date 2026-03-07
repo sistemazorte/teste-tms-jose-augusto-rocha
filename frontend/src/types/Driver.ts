@@ -1,5 +1,5 @@
 export interface Driver {
-  id: number;
+  id: number | null;
   name: string;
   cpf: string;
   cnh_number: string;

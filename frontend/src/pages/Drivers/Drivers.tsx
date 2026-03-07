@@ -1,41 +1,48 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../../api/axios-client";
-import Modal from "../../components/Modal/Modal";
 import NewDriverModal from "../../components/DriverModals/NewDriverModal/NewDriverModal";
-import { Button, IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import type { Driver } from "../../types/Driver";
-import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
+import { columns } from "../../components/DriverTable/columns";
+import { DriverTable } from "@/components/DriverTable/DriverTable";
+import EditDriverModal from "@/components/DriverModals/EditDriverModal/EditDriverModal";
 import {
-  CircleCheck,
-  CircleX,
-  Pencil,
-  Plus,
-  UserCheck,
-  UserRoundCheck,
-  UserRoundX,
-  UserX,
-} from "lucide-react";
-
+  getDrivers as fetchDrivers,
+  toggleDriverStatus,
+} from "../../services/driverService";
+import Modal from "@/components/Modal/Modal";
 export default function Drivers() {
   const [drivers, setDrivers] = useState<Driver[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [newDriverOpen, setNewDriverOpen] = useState(false);
+  const [editDriverOpen, setEditDriverOpen] = useState<boolean>(false);
+  const [updateDriverStatusOpen, setUpdateDriverStatusOpen] =
+    useState<boolean>(false);
+
+  const [selectedDriver, setSelectedDriver] = useState<Driver | null>(null);
+  const [newDriverOpen, setNewDriverOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getDrivers();
   }, []);
 
   const getDrivers = () => {
-    setLoading(true);
-    axiosClient
-      .get("/drivers")
-      .then(({ data }) => {
-        setLoading(false);
-        console.log(data);
-        setDrivers(data.data);
+    axiosClient;
+    fetchDrivers().then(({ data }) => {
+      console.log(data);
+      setDrivers(data.data);
+    });
+  };
+
+  const handleSubmit = () => {
+    if (!selectedDriver?.id) return;
+    axiosClient;
+    toggleDriverStatus(selectedDriver?.id)
+      .then(() => {
+        getDrivers();
+        setUpdateDriverStatusOpen(false);
       })
-      .catch(() => {
-        setLoading(false);
+      .catch((err) => {
+        console.error(err);
       });
   };
 
@@ -55,66 +62,60 @@ export default function Drivers() {
           Novo motorista
         </Button>
       </div>
-      <div className="">
-        <table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Nome</th>
-              <th>CPF</th>
-              <th>CNH</th>
-              <th>Categoria</th>
-              <th>Telefone</th>
-              <th>Status</th>
-              <th className="flex justify-end">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {drivers.map((driver: Driver) => (
-              <tr>
-                <td>{driver.id}</td>
-                <td>{driver.name}</td>
-                <td>{driver.cpf}</td>
-                <td>{driver.cnh_number}</td>
-                <td>
-                  {
-                    <span className="border border-black  px-2 py-1 rounded">
-                      {driver.cnh_category}
-                    </span>
-                  }
-                </td>
-                <td>{driver.phone}</td>
-                <td>
-                  {driver.is_active ? (
-                    <span className="bg-green-300 text-green-600  px-2 py-1 rounded">
-                      Ativo
-                    </span>
-                  ) : (
-                    <span className="bg-red-300 text-red-600  px-2 py-1 rounded">
-                      Inativo
-                    </span>
-                  )}
-                </td>
-                <td className="flex justify-end">
-                  <IconButton>
-                    <Pencil />
-                  </IconButton>
-                  <IconButton
-                    color={`${driver.is_active ? "success" : "error"}`}
-                  >
-                    {driver.is_active ? <UserCheck /> : <UserX />}
-                  </IconButton>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      <div className="bg-white p-8 rounded-2xl my-5">
+        <DriverTable
+          columns={columns(
+            setEditDriverOpen,
+            setUpdateDriverStatusOpen,
+            setSelectedDriver,
+          )}
+          data={drivers}
+        />
       </div>
 
       <NewDriverModal
         open={newDriverOpen}
         onClose={() => setNewDriverOpen(false)}
+        onSaved={getDrivers}
       />
+      <EditDriverModal
+        open={editDriverOpen}
+        formData={selectedDriver}
+        onClose={() => setEditDriverOpen(false)}
+        onSaved={getDrivers}
+      />
+
+      <Modal
+        open={updateDriverStatusOpen}
+        onClose={() => setUpdateDriverStatusOpen(false)}
+      >
+        <div className="max-w-80">
+          {selectedDriver?.is_active ? (
+            <div>
+              Você deseja realmente tornar o usuário(a){" "}
+              <strong>{`${selectedDriver?.name}`}</strong> inativo?
+            </div>
+          ) : (
+            <div>
+              Você deseja realmente tornar o usuário(a){" "}
+              <strong>{`${selectedDriver?.name}`}</strong> ativo?
+            </div>
+          )}
+          <div className="flex justify-center gap-3 mt-6">
+            <Button color="success" variant="contained" onClick={handleSubmit}>
+              Confirmar
+            </Button>
+            <Button
+              color="error"
+              variant="contained"
+              onClick={() => setUpdateDriverStatusOpen(false)}
+            >
+              Cancelar
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }
