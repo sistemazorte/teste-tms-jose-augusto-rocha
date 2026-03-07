@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +16,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        DB::table('transport_orders')->truncate();
+        DB::table('drivers')->truncate();
+        DB::table('users')->truncate();
+
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' =>bcrypt('admin'),
         ]);
+
+        $this->call([
+        DriverSeeder::class,
+         ]);
     }
 }
