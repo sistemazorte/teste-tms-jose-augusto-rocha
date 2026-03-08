@@ -27,20 +27,6 @@ export const columns = (
   setSelectedDriver: (driver: Driver) => void,
 ): ColumnDef<Driver>[] => [
   {
-    accessorKey: "id",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Id
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
     accessorKey: "name",
     header: ({ column }) => {
       return (
@@ -64,7 +50,7 @@ export const columns = (
   },
   {
     accessorKey: "cnh_category",
-    header: "Category",
+    header: "Categoria",
     cell: ({ row }) => {
       return (
         <span className="border border-gray-400  px-2 py-0.5 rounded">
@@ -85,11 +71,11 @@ export const columns = (
     header: "Status",
     cell: ({ row }) => {
       return row.original.is_active ? (
-        <span className="bg-green-200 text-green-600 border border-green-300  px-2 py-1 rounded">
+        <span className="bg-green-100 text-green-400 border border-green-300  px-2 py-1 rounded">
           Ativo
         </span>
       ) : (
-        <span className="bg-red-200 text-red-600 border border-red-300  px-2 py-1 rounded">
+        <span className="bg-red-100 text-red-400 border border-red-300  px-2 py-1 rounded">
           Inativo
         </span>
       );
@@ -119,20 +105,7 @@ export const columns = (
               <DropdownMenuLabel className="text-gray-400 text-sm">
                 Ações
               </DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    driver.id ? driver.id.toString() : "Id não especificado",
-                  )
-                }
-              >
-                <div className="flex items-center gap-2">
-                  <div>
-                    <IdCardLanyard />
-                  </div>
-                  <div>Copiar id do motorista</div>
-                </div>
-              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => {

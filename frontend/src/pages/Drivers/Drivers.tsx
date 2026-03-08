@@ -63,7 +63,7 @@ export default function Drivers() {
         </Button>
       </div>
 
-      <div className="bg-white p-8 rounded-2xl my-5">
+      <div className="bg-white p-8 rounded-2xl my-5 shadow-md">
         <DriverTable
           columns={columns(
             setEditDriverOpen,

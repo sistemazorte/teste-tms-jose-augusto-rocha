@@ -63,7 +63,7 @@ export default function EditDriverModal({
       <Modal open={open} onClose={onClose}>
         <div className="min-w-xl">
           <div>
-            <h2 className="text-xl font-semibold mb-1">Novo Motorista</h2>
+            <h2 className="text-xl font-semibold mb-1">Editar Motorista</h2>
 
             <p className="text-sm text-gray-500 mb-3">
               Preencha os dados do motorista

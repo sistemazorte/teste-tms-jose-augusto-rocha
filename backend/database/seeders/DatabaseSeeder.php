@@ -25,12 +25,13 @@ class DatabaseSeeder extends Seeder
         User::factory(4)->create();
         User::create([
             'name' => 'Admin',
-            'email' => 'admin@example.com',
+            'email' => 'admin@admin',
             'password' =>bcrypt('admin'),
         ]);
         
         $this->call([
         DriverSeeder::class,
+        TransportOrderSeeder::class,
          ]);
     }
 }

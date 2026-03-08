@@ -71,8 +71,9 @@ export default function Signup() {
         ref={passwordConfirmationRef}
         type="password"
         placeholder="Confirme sua senha"
+        className="w-full px-4 py-3 border-2 border-gray-200 rounded focus:border-purple-700 outline-none transition"
       />
-      <button className="w-full py-3 bg-purple-700 text-white font-medium rounded hover:bg-purple-800 transition">
+      <button className="w-full py-3 bg-green-700 text-white font-medium rounded hover:bg-green-800 transition">
         Criar Conta
       </button>
       <p className="mt-4 text-center text-gray-500 text-sm">

@@ -2,7 +2,7 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import { UseStateContext } from "../../contexts/ContextProvider";
 import { useEffect } from "react";
 import axiosClient from "../../api/axios-client";
-import { Button } from "@mui/material";
+import { LogOut, Truck } from "lucide-react";
 
 export default function DefaultLayout() {
   const { user, token, setUser, setToken } = UseStateContext();
@@ -28,29 +28,49 @@ export default function DefaultLayout() {
 
   return (
     <>
-      <div className="flex min-h-screen">
-        <aside className="w-60 bg-purple-600 p-4 block px-3 py-4 h-screen">
-          <Link
-            className="block px-4 py-3 rounded-md text-white hover:bg-black/20 transition-all"
-            to="/dashboard"
-          >
-            Dashboard
-          </Link>
-          <Link
-            className="block px-4 py-3 rounded-md text-white hover:bg-black/20 transition-all"
-            to="/drivers"
-          >
-            Motoristas
-          </Link>
-          <Link
-            className="block px-4 py-3 rounded-md text-white hover:bg-black/20 transition-all"
-            to="/transport-orders"
-          >
-            Ordens de Transporte
-          </Link>
+      <div className="flex h-screen overflow-hidden">
+        <aside className="min-w-60 h-screen flex flex-col justify-between px-3 py-4 bg-white shadow">
+          <div>
+            <div className="flex gap-2 items-center p-4">
+              <Truck size={45} />
+              <div className="font-bold">
+                <div>TransLog</div>
+                <div>Software</div>
+              </div>
+            </div>
+            <hr className="my-4 border-gray-300 w-full" />
+            <Link
+              className="block p-4 py-3 rounded-md hover:bg-black/20 transition-all"
+              to="/dashboard"
+            >
+              Dashboard
+            </Link>
+            <Link
+              className="block p-4 py-3 rounded-md  hover:bg-black/20 transition-all"
+              to="/drivers"
+            >
+              Motoristas
+            </Link>
+            <Link
+              className="block p-4 py-3 rounded-md  hover:bg-black/20 transition-all"
+              to="/transport-orders"
+            >
+              Ordens de Transporte
+            </Link>
+          </div>
+          <div className="px-3 py-4">
+            <Link
+              onClick={onLogout}
+              to="/"
+              className="flex items-center justify-between gap-2 w-full px-4 py-3 rounded-md hover:bg-black/20 transition-all"
+            >
+              <span>Logout</span>
+              <LogOut size={20} />
+            </Link>
+          </div>
         </aside>
         <div className="flex-1 flex flex-col min-h-screen">
-          <header className="h-20 py-8 px-12 bg-white shadow-sm flex justify-between items-center">
+          {/* <header className="h-20 py-8 px-12 shadow-sm flex justify-between items-center">
             <div>Header</div>
             <div>{user?.name}</div>
             <Button
@@ -59,8 +79,8 @@ export default function DefaultLayout() {
             >
               Logout
             </Button>
-          </header>
-          <main className="flex-1 p-8 bg-[#f6f6f6] overflow-auto">
+          </header> */}
+          <main className="flex-1 p-8 bg-[#f6f6f6] overflow-y-auto">
             <Outlet />
           </main>
         </div>

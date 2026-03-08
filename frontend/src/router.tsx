@@ -6,7 +6,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import DefaultLayout from "./components/DefaultLayout/DefaultLayout";
 import GuestLayout from "./components/GuestLayout/GuestLayout";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import TransportOrdens from "./pages/TransportOrders/TransportOrdens";
+import TransportOrdens from "./pages/TransportOrders/TransportOrders";
 
 const router = createBrowserRouter([
   {
