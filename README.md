@@ -145,7 +145,14 @@ frontend/
 
 ## Autenticação
 
-O projeto usa **Laravel Sanctum** para autenticação via tokens. Faça login na página inicial para obter um token de acesso que será armazenado no localStorage.
+O projeto usa **Laravel Sanctum** para autenticação via tokens. Faça login na página inicial para obter um token de acesso que será armazenado no `localStorage`.
+
+### Credenciais de teste
+
+Após executar os seeders (`php artisan db:seed`), um usuário administrador é criado automaticamente:
+
+- **Email:** admin@admin
+- **Senha:** admin
 
 ## Funcionalidades Principais
 
